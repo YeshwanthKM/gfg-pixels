@@ -5,6 +5,12 @@
 {% block body_class %}login-body{% endblock %}
 
 {% block content %}
+<div class="theme-toggle-wrapper" style="position: absolute; top: 20px; right: 20px;">
+    <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </button>
+</div>
+
 <div class="login-card">
     <div class="login-header">
         <i class="fas fa-code logo-icon"></i>

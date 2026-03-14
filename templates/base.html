@@ -117,6 +117,9 @@
             <div class="search-bar"></div>
         </div>
         <div class="user-profile">
+            <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
             <div class="user-info" style="text-align: right;">
                 <h4>{{ user.name }}</h4>
                 <p>{{ role_text }}</p>
@@ -130,6 +133,11 @@
 </head>
 
 <body class="{% block body_class %}dashboard-body{% endblock %}">
+    <script>
+        // Initial theme setup to prevent flicker
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -152,6 +160,15 @@
     {% endblock %}
 
     <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.getElementById('mobile-overlay');

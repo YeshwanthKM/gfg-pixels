@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar('leader', 'dashboard') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        {{ header(user, 'Club Leader') }}
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Edit Member</h1>
+                <p>Update student details for <strong>{{ member_email }}</strong>.</p>
+            </div>
+
+            <!-- Form Section -->
+            <div class="content-section" style="max-width: 600px;">
+                <form action="{{ url_for('edit_member', email=member_email) }}" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" value="{{ member.name }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg_no">Registration Number</label>
+                        <input type="text" id="reg_no" name="reg_no" value="{{ member.reg_no }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" id="department" name="department" value="{{ member.department }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="text" id="password" name="password" value="{{ member.password }}" required>
+                        <small style="color: var(--text-secondary); font-size: 12px; margin-top: 5px; display: block;">
+                            You can reset the user's password here.
+                        </small>
+                    </div>
+
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        <button type="submit" class="btn"><i class="fas fa-save" style="margin-right: 8px;"></i>Save
+                            Changes</button>
+                        <a href="{{ url_for('leader_dashboard') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

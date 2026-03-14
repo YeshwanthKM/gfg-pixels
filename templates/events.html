@@ -76,17 +76,15 @@
                                     </span>
                                 </td>
                                 <td>
-                                    {% if role == 'leader' %}
                                     <a href="{{ url_for('view_event', event_id=event_id) }}" class="btn btn-secondary"
-                                        style="padding: 6px 12px; font-size: 12px;">View Details</a>
-                                    {% else %}
-                                    {% if user.email in event.participants %}
-                                    <button class="btn btn-secondary" disabled
-                                        style="padding: 6px 12px; font-size: 12px; opacity: 0.6; cursor: not-allowed;">Joined</button>
-                                    {% else %}
+                                        style="padding: 6px 12px; font-size: 12px; margin-right: 5px;">View Details</a>
+
+                                    {% if role == 'member' and user.email not in event.participants %}
                                     <a href="{{ url_for('join_event', event_id=event_id) }}" class="btn"
                                         style="padding: 6px 12px; font-size: 12px;">Join Event</a>
-                                    {% endif %}
+                                    {% elif role == 'member' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">Joined</span>
                                     {% endif %}
                                 </td>
                             </tr>

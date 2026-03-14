@@ -232,6 +232,50 @@ def add_member():
             
     return render_template('add_member.html', user=current_user)
 
+@app.route('/edit_member/<email>', methods=['GET', 'POST'])
+def edit_member(email):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+        
+    current_user = USERS.get(session['user'])
+    if not current_user or current_user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+        
+    member = USERS.get(email)
+    if not member:
+        flash('Member not found', 'error')
+        return redirect(url_for('leader_dashboard'))
+        
+    if request.method == 'POST':
+        member['name'] = request.form.get('name')
+        member['reg_no'] = request.form.get('reg_no')
+        member['department'] = request.form.get('department')
+        member['password'] = request.form.get('password')
+        
+        flash('Member details updated successfully!', 'success')
+        return redirect(url_for('leader_dashboard'))
+        
+    return render_template('edit_member.html', user=current_user, member=member, member_email=email)
+
+@app.route('/delete_member/<email>')
+def delete_member(email):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+        
+    current_user = USERS.get(session['user'])
+    if not current_user or current_user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+        
+    if email in USERS:
+        del USERS[email]
+        flash('Member removed successfully!', 'success')
+    else:
+        flash('Member not found', 'error')
+        
+    return redirect(url_for('leader_dashboard'))
+
 @app.route('/create_event', methods=['GET', 'POST'])
 def create_event():
     if 'user' not in session:
@@ -298,8 +342,7 @@ def view_event(event_id):
         return redirect(url_for('login'))
         
     current_user = USERS.get(session['user'])
-    if not current_user or current_user['role'] != 'leader':
-        flash('Unauthorized access', 'error')
+    if not current_user:
         return redirect(url_for('login'))
         
     if event_id not in EVENTS:

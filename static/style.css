@@ -16,6 +16,16 @@
     --transition: all 0.3s ease;
 }
 
+[data-theme='dark'] {
+    --bg-color: #0b0f19;
+    --surface-color: #161b22;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --border-color: #30363d;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --secondary-color: #21262d;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -981,4 +991,85 @@ a:hover {
     position: absolute;
     left: 0;
     color: var(--primary-color);
+}
+
+/* Dark Mode Overrides */
+[data-theme='dark'] .sidebar {
+    background-color: var(--surface-color);
+    border-right: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .top-header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .content-section {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .stat-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .data-table th {
+    background-color: #21262d;
+    color: var(--text-primary);
+}
+
+[data-theme='dark'] .data-table tr:hover {
+    background-color: #1c2128;
+}
+
+[data-theme='dark'] input,
+[data-theme='dark'] textarea,
+[data-theme='dark'] select {
+    background-color: #0d1117;
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme='dark'] .stat-icon.primary {
+    background-color: rgba(15, 157, 88, 0.15);
+}
+
+[data-theme='dark'] .stat-icon.secondary {
+    background-color: rgba(43, 50, 60, 0.4);
+}
+
+.theme-toggle {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-right: 15px;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(15, 157, 88, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+[data-theme='dark'] .theme-toggle i:before {
+    content: "\f185";
+    /* sun icon */
+}
+
+[data-theme='dark'] .login-body {
+    background: linear-gradient(135deg, #0b0f19 0%, #0d1117 100%);
+}
+
+[data-theme='dark'] .login-card {
+    background: var(--surface-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
