@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-code"></i> GFG Club</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('leader_dashboard') }}" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('add_member') }}" class="nav-item active">
+                <i class="fas fa-user-plus"></i>
+                <span>Add Member</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('logout') }}" class="nav-item" style="color: var(--error-color);">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club Leader</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Add New Member</h1>
+                <p>Register a new student to the campus club ecosystem.</p>
+            </div>
+
+            <!-- Form Section -->
+            <div class="content-section" style="max-width: 600px;">
+                <form action="{{ url_for('add_member') }}" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Student's name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">College Email ID</label>
+                        <input type="email" id="email" name="email" required placeholder="name@college.edu">
+                    </div>
+
+                    <div style="display: flex; gap: 20px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="reg_no">Registration Number</label>
+                            <input type="text" id="reg_no" name="reg_no" required placeholder="e.g. 21BCE2001">
+                        </div>
+
+                        <div class="form-group" style="flex: 1;">
+                            <label for="department">Department</label>
+                            <input type="text" id="department" name="department" required
+                                placeholder="e.g. Computer Science">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Temporary Password</label>
+                        <input type="password" id="password" name="password" required
+                            placeholder="Assign a default password">
+                        <small style="color: var(--text-secondary); font-size: 12px; margin-top: 5px; display: block;">
+                            The user will use this password for their initial login.
+                        </small>
+                    </div>
+
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        <button type="submit" class="btn"><i class="fas fa-check"
+                                style="margin-right: 8px;"></i>Register Member</button>
+                        <a href="{{ url_for('leader_dashboard') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

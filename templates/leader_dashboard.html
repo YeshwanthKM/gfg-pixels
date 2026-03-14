@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-code"></i> GFG Club</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('leader_dashboard') }}" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('add_member') }}" class="nav-item">
+                <i class="fas fa-user-plus"></i>
+                <span>Add Member</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('logout') }}" class="nav-item" style="color: var(--error-color);">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar">
+                <!-- Search could go here -->
+            </div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club Leader</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Welcome back, {{ user.name.split(' ')[0] }}! 👋</h1>
+                <p>Here's what's happening in your campus club today.</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>{{ total_members }}</h3>
+                        <p>Total Members</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon secondary">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>{{ total_leaders }}</h3>
+                        <p>Club Leaders</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>{{ total_events }}</h3>
+                        <p>Total Events</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Active Events</h2>
+                    <a href="{{ url_for('create_event') }}" class="btn"><i class="fas fa-plus"
+                            style="margin-right: 8px;"></i>Create New Event</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Event Title</th>
+                                <th>Date</th>
+                                <th>Host</th>
+                                <th>Participants Joined</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event_id, event in events.items() %}
+                            <tr>
+                                <td><strong>{{ event.title }}</strong></td>
+                                <td>{{ event.date }}</td>
+                                <td>{{ event.host_email }}</td>
+                                <td>
+                                    <span class="badge"
+                                        style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">
+                                        <i class="fas fa-user-check"></i> {{ event.participants|length }} Joined
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('view_event', event_id=event_id) }}" class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 12px;">View Details</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5"
+                                    style="text-align: center; color: var(--text-secondary); padding: 30px;">
+                                    No active events. Try creating one!
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Main Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-address-book"></i> Member Directory</h2>
+                    <a href="{{ url_for('add_member') }}" class="btn"><i class="fas fa-plus"
+                            style="margin-right: 8px;"></i>Add New Member</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>College Email</th>
+                                <th>Registration Number</th>
+                                <th>Department</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for email, member in members.items() %}
+                            <tr>
+                                <td><strong>{{ member.name }}</strong></td>
+                                <td>{{ email }}</td>
+                                <td>{{ member.reg_no }}</td>
+                                <td>{{ member.department }}</td>
+                                <td><span class="badge member">{{ member.role|capitalize }}</span></td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5"
+                                    style="text-align: center; color: var(--text-secondary); padding: 30px;">
+                                    No members found. Try adding one!
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

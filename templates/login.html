@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block body_class %}login-body{% endblock %}
+
+{% block content %}
+<div class="login-card">
+    <div class="login-header">
+        <i class="fas fa-code logo-icon"></i>
+        <h1>GFG Campus Club</h1>
+        <p>Sign in to the portal</p>
+    </div>
+
+    <form action="{{ url_for('login') }}" method="POST">
+        <div class="form-group">
+            <label for="email">College Email</label>
+            <input type="email" id="email" name="email" placeholder="e.g. gfgleader1@gmail.com" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn login-btn">Login to Dashboard</button>
+    </form>
+
+    <div class="login-hint">
+        <p><strong>Demo Accounts:</strong></p>
+        <p>Leader: gfgleader1@gmail.com / leader123</p>
+        <p>Member: gfgmember1@gmail.com / member123</p>
+    </div>
+</div>
+{% endblock %}

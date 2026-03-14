@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-code"></i> GFG Club</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('member_dashboard') }}" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-laptop-code"></i>
+                <span>Learning Paths</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-trophy"></i>
+                <span>Leaderboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-envelope"></i>
+                <span>Contact & Support</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('logout') }}" class="nav-item" style="color: var(--error-color);">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club Member</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Hello, {{ user.name.split(' ')[0] }}! 👋</h1>
+                <p>Welcome to your personal learning dashboard.</p>
+            </div>
+
+            <!-- Profile Overview (Using a content section) -->
+            <div class="content-section" style="border-left: 4px solid var(--primary-color);">
+                <div class="section-header" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+                    <h2><i class="fas fa-user-circle"></i> Personal Profile</h2>
+                </div>
+                <div class="stats-grid" style="margin-top: 25px; margin-bottom: 0;">
+                    <div>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">Full Name</p>
+                        <p style="font-weight: 500;">{{ user.name }}</p>
+                    </div>
+                    <div>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">College Email</p>
+                        <p style="font-weight: 500;">{{ email }}</p>
+                    </div>
+                    <div>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">Registration No.
+                        </p>
+                        <p style="font-weight: 500;">{{ user.reg_no }}</p>
+                    </div>
+                    <div>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">Department</p>
+                        <p style="font-weight: 500;">{{ user.department }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platform Features -->
+            <h2 style="font-size: 18px; margin-bottom: 25px; margin-top: 40px;">Explore Platform</h2>
+
+            <!-- Events Section -->
+            <div class="content-section" style="margin-bottom: 30px;">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-check"></i> Upcoming Events</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Event Title</th>
+                                <th>Date</th>
+                                <th>Host</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event_id, event in events.items() %}
+                            <tr>
+                                <td><strong>{{ event.title }}</strong><br><small
+                                        style="color: var(--text-secondary);">{{ event.description }}</small></td>
+                                <td>{{ event.date }}</td>
+                                <td>{{ event.host_email }}</td>
+                                <td>
+                                    {% if email in event.participants %}
+                                    <span class="badge"
+                                        style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">Joined</span>
+                                    {% else %}
+                                    <span class="badge"
+                                        style="background-color: rgba(43, 50, 60, 0.1); color: var(--secondary-color);">Not
+                                        Joined</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if email in event.participants %}
+                                    <button class="btn btn-secondary" disabled
+                                        style="opacity: 0.6; cursor: not-allowed;"><i class="fas fa-check"
+                                            style="margin-right: 5px;"></i>Joined</button>
+                                    {% else %}
+                                    <a href="{{ url_for('join_event', event_id=event_id) }}" class="btn"><i
+                                            class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Join Event</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5"
+                                    style="text-align: center; color: var(--text-secondary); padding: 30px;">
+                                    No upcoming events at the moment.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <!-- Learning Resources -->
+                <div class="feature-card">
+                    <div class="coming-soon-badge">Coming Soon</div>
+                    <i class="fas fa-book-open feature-icon"></i>
+                    <h3>Learning Resources</h3>
+                    <p>Access exclusive coding practice resources, DSA prep materials, and curated learning paths
+                        tailored for your campus.</p>
+                    <button class="btn btn-secondary" disabled>View Resources</button>
+                </div>
+
+                <!-- Community Features -->
+                <div class="feature-card">
+                    <div class="coming-soon-badge">Coming Soon</div>
+                    <i class="fas fa-chart-line feature-icon"></i>
+                    <h3>Community Tracking</h3>
+                    <p>Track your event participation, compete on campus leaderboards, and read the latest tech blogs
+                        and club updates.</p>
+                    <button class="btn btn-secondary" disabled>View Community</button>
+                </div>
+
+                <!-- Contact & Support -->
+                <div class="feature-card">
+                    <div class="coming-soon-badge">Coming Soon</div>
+                    <i class="fas fa-headset feature-icon"></i>
+                    <h3>Contact & Support</h3>
+                    <p>Connect with core committee leaders, view official community links, and use our priority query
+                        support system.</p>
+                    <button class="btn btn-secondary" disabled>Get Support</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-code"></i> GFG Club</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('leader_dashboard') }}" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('add_member') }}" class="nav-item">
+                <i class="fas fa-user-plus"></i>
+                <span>Add Member</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('logout') }}" class="nav-item" style="color: var(--error-color);">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club Leader</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <a href="{{ url_for('leader_dashboard') }}"
+                        style="display: inline-flex; align-items: center; gap: 5px; margin-bottom: 15px; font-size: 14px;"><i
+                            class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                    <h1>{{ event.title }}</h1>
+                    <p><i class="far fa-calendar-alt" style="margin-right: 5px;"></i> {{ event.date }} &nbsp;|&nbsp; <i
+                            class="fas fa-user-shield" style="margin-right: 5px;"></i> Host: {{ event.host_email }}</p>
+                </div>
+                <div
+                    style="background: var(--surface-color); padding: 15px 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center;">
+                    <h2 style="color: var(--primary-color); font-size: 28px;">{{ event.participants|length }}</h2>
+                    <p style="font-size: 12px; color: var(--text-secondary); font-weight: 500;">Attending</p>
+                </div>
+            </div>
+
+            <!-- Event Details -->
+            <div class="content-section">
+                <h3 style="margin-bottom: 10px; font-size: 16px;">Description</h3>
+                <p style="color: var(--text-secondary);">{{ event.description }}</p>
+            </div>
+
+            <!-- Participants List -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Registered Participants</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Registration No.</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for participant in participants %}
+                            <tr>
+                                <td><strong>{{ participant.name }}</strong></td>
+                                <td>{{ participant.email }}</td>
+                                <td>{{ participant.reg_no }}</td>
+                                <td>{{ participant.department }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4"
+                                    style="text-align: center; color: var(--text-secondary); padding: 30px;">
+                                    No participants have joined this event yet.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

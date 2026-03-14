@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-code"></i> GFG Club</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('leader_dashboard') }}" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('add_member') }}" class="nav-item">
+                <i class="fas fa-user-plus"></i>
+                <span>Add Member</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('logout') }}" class="nav-item" style="color: var(--error-color);">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club Leader</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Create New Event</h1>
+                <p>Schedule a new club activity for members to join.</p>
+            </div>
+
+            <!-- Form Section -->
+            <div class="content-section" style="max-width: 600px;">
+                <form action="{{ url_for('create_event') }}" method="POST">
+                    <div class="form-group">
+                        <label for="title">Event Title</label>
+                        <input type="text" id="title" name="title" required placeholder="e.g. DSA Study Session">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Event Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Event Description</label>
+                        <textarea id="description" name="description" rows="4" required
+                            placeholder="What is this event about?"
+                            style="width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        <button type="submit" class="btn"><i class="fas fa-calendar-plus"
+                                style="margin-right: 8px;"></i>Host Event</button>
+                        <a href="{{ url_for('leader_dashboard') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
