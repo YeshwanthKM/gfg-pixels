@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-code"></i> GFG Club</h2>
+        </div>
+        <nav class="sidebar-nav">
+            {% if role == 'leader' %}
+            <a href="{{ url_for('leader_dashboard') }}" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('add_member') }}" class="nav-item">
+                <i class="fas fa-user-plus"></i>
+                <span>Add Member</span>
+            </a>
+            <a href="{{ url_for('learning_resources') }}" class="nav-item">
+                <i class="fas fa-laptop-code"></i>
+                <span>Learning Paths</span>
+            </a>
+            <div class="nav-group">
+                <span class="nav-label">Community</span>
+                <a href="{{ url_for('leaderboard') }}" class="nav-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Leaderboard</span>
+                </a>
+                <a href="{{ url_for('blogs') }}" class="nav-item active">
+                    <i class="fas fa-blog"></i>
+                    <span>Blog / Updates</span>
+                </a>
+            </div>
+            <a href="{{ url_for('leader_dashboard') }}#events-section" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for('member_dashboard') }}" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('learning_resources') }}" class="nav-item">
+                <i class="fas fa-laptop-code"></i>
+                <span>Learning Paths</span>
+            </a>
+            <div class="nav-group">
+                <span class="nav-label">Community</span>
+                <a href="{{ url_for('leaderboard') }}" class="nav-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Leaderboard</span>
+                </a>
+                <a href="{{ url_for('blogs') }}" class="nav-item active">
+                    <i class="fas fa-blog"></i>
+                    <span>Blog / Updates</span>
+                </a>
+            </div>
+            <a href="#" class="nav-item">
+                <i class="fas fa-envelope"></i>
+                <span>Contact & Support</span>
+            </a>
+            {% endif %}
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('logout') }}" class="nav-item" style="color: var(--error-color);">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club {{ role|capitalize }}</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>Blog & Club Updates</h1>
+                    <p>Stay updated with the latest news, tutorials, and announcements from the club.</p>
+                </div>
+                {% if role == 'leader' %}
+                <a href="{{ url_for('add_blog') }}" class="btn">
+                    <i class="fas fa-plus" style="margin-right: 8px;"></i>New Post
+                </a>
+                {% endif %}
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}"
+                style="margin-bottom: 20px; padding: 15px; border-radius: 8px; background: {% if category == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if category == 'success' %}#155724{% else %}#721c24{% endif %};">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="blog-grid">
+                {% for blog in blogs %}
+                <div class="blog-card">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-user" style="margin-right: 5px;"></i> {{ blog.author }}</span>
+                        <span><i class="fas fa-calendar-alt" style="margin-right: 5px;"></i> {{ blog.date }}</span>
+                    </div>
+                    <h3 class="blog-title">{{ blog.title }}</h3>
+                    <p class="blog-description">{{ blog.description }}</p>
+                    <div class="blog-actions">
+                        <a href="#" class="btn btn-sm btn-outline">Read More</a>
+                        {% if role == 'leader' %}
+                        <a href="{{ url_for('delete_blog', blog_id=blog.id) }}" class="delete-btn"
+                            onclick="return confirm('Are you sure you want to delete this post?')">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="content-section" style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+                    <i class="fas fa-blog"
+                        style="font-size: 40px; color: var(--border-color); margin-bottom: 20px; display: block;"></i>
+                    <p style="color: var(--text-secondary);">No blog entries yet. Stay tuned!</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

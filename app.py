@@ -63,6 +63,24 @@ EVENTS = {
     }
 }
 
+# In-memory blogs storage
+BLOGS = [
+    {
+        'id': 'blog1',
+        'title': 'Getting Started with Data Structures',
+        'author': 'Rahul Sharma',
+        'date': 'March 14, 2026',
+        'description': 'An introduction to data structures and why they are important for coding interviews.'
+    },
+    {
+        'id': 'blog2',
+        'title': 'Python Tips for Competitive Programming',
+        'author': 'Priya Patel',
+        'date': 'March 12, 2026',
+        'description': 'Learn helpful built-in functions and libraries in Python that can speed up your problem-solving.'
+    }
+]
+
 @app.route('/')
 def index():
     if 'user' in session:
@@ -113,8 +131,63 @@ def leader_dashboard():
                            user=user, 
                            members=members, 
                            total_members=len(members),
+                           total_leaders=len(leaders),
                            total_events=len(EVENTS),
                            events=EVENTS)
+
+# Global storage for student queries
+QUERIES = []
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    current_user = USERS.get(session['user'])
+    if not current_user:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        query = {
+            'id': str(len(QUERIES) + 1),
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'subject': request.form.get('subject'),
+            'message': request.form.get('message'),
+            'date': datetime.now().strftime("%Y-%m-%d %H:%M")
+        }
+        QUERIES.append(query)
+        flash('Your query has been submitted successfully. The club team will review it and respond soon.', 'success')
+        return redirect(url_for('contact'))
+        
+    return render_template('contact.html', user=current_user)
+
+@app.route('/view_queries')
+def view_queries():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    current_user = USERS.get(session['user'])
+    if not current_user or current_user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('member_dashboard'))
+        
+    return render_template('view_queries.html', user=current_user, queries=QUERIES)
+
+@app.route('/delete_query/<query_id>')
+def delete_query(query_id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+        
+    current_user = USERS.get(session['user'])
+    if not current_user or current_user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('member_dashboard'))
+    
+    global QUERIES
+    QUERIES = [q for q in QUERIES if q['id'] != query_id]
+    flash('Query deleted successfully', 'success')
+    return redirect(url_for('view_queries'))
 
 @app.route('/member_dashboard')
 def member_dashboard():
@@ -233,6 +306,16 @@ def view_event(event_id):
     return render_template('view_event.html', user=current_user, event=event, participants=participants)
 
 
+@app.route('/club_info')
+def club_info():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    user = USERS.get(session['user'])
+    if not user:
+        return redirect(url_for('login'))
+    return render_template('club_info.html', user=user)
+
 @app.route('/learning_resources')
 def learning_resources():
     if 'user' not in session:
@@ -243,6 +326,74 @@ def learning_resources():
         return redirect(url_for('login'))
         
     return render_template('learning_resources.html', user=user, role=user['role'])
+
+@app.route('/leaderboard')
+def leaderboard():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user:
+        return redirect(url_for('login'))
+    
+    # Get all members and sort them (mock static sort for now)
+    members_list = []
+    for email, data in USERS.items():
+        if data['role'] == 'member':
+            members_list.append(data)
+    
+    # For prototype, we just use the list as is and assign static ranks in template
+    return render_template('leaderboard.html', user=user, members=members_list, role=user['role'])
+
+@app.route('/blogs')
+def blogs():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user:
+        return redirect(url_for('login'))
+    
+    return render_template('blogs.html', user=user, blogs=BLOGS, role=user['role'])
+
+@app.route('/add_blog', methods=['GET', 'POST'])
+def add_blog():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user or user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        title = request.form.get('title')
+        author = request.form.get('author')
+        date = request.form.get('date')
+        description = request.form.get('description')
+        
+        BLOGS.insert(0, {
+            'id': str(uuid.uuid4())[:8],
+            'title': title,
+            'author': author,
+            'date': date or datetime.now().strftime("%B %d, %Y"),
+            'description': description
+        })
+        flash('Blog post added successfully!', 'success')
+        return redirect(url_for('blogs'))
+        
+    return render_template('add_blog.html', user=user)
+
+@app.route('/delete_blog/<blog_id>')
+def delete_blog(blog_id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user or user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+    
+    global BLOGS
+    BLOGS = [blog for blog in BLOGS if blog['id'] != blog_id]
+    flash('Blog post deleted.', 'success')
+    return redirect(url_for('blogs'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

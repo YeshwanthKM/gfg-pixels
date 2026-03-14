@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar(role, 'leaderboard') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club {{ role|capitalize }}</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Campus Coding Leaderboard</h1>
+                <p>Recognition for the most active coders and community contributors.</p>
+            </div>
+
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-medal"></i> Top Performers</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th>Registration Number</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in members %}
+                            <tr {% if loop.index <=3 %}style="background-color: rgba(15, 157, 88, 0.02);" {% endif %}>
+                                <td>
+                                    {% if loop.index == 1 %}
+                                    <span class="rank-pill rank-1">1</span>
+                                    {% elif loop.index == 2 %}
+                                    <span class="rank-pill rank-2">2</span>
+                                    {% elif loop.index == 3 %}
+                                    <span class="rank-pill rank-3">3</span>
+                                    {% else %}
+                                    <span class="rank-pill rank-other">{{ loop.index }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div style="font-weight: 600; color: var(--text-primary);">
+                                        {{ member.name }}
+                                        {% if loop.index == 1 %}<i class="fas fa-crown"
+                                            style="color: #FFD700; margin-left: 5px;"></i>{% endif %}
+                                    </div>
+                                </td>
+                                <td>{{ member.reg_no }}</td>
+                                <td>{{ member.department }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

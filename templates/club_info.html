@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar(user.role, 'club_info') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>{{ user.role|capitalize }}</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Club Information</h1>
+                <p>Learn more about our mission, objectives, and the people behind the club.</p>
+            </div>
+
+            <!-- About Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-info-circle"></i> About GeeksforGeeks Campus Club</h2>
+                </div>
+                <div
+                    style="background: rgba(15, 157, 88, 0.02); padding: 25px; border-radius: var(--border-radius); border-left: 4px solid var(--primary-color);">
+                    <p style="font-size: 15px; line-height: 1.8; color: var(--text-primary);">
+                        The GeeksforGeeks Campus Club is a student-driven community focused on improving coding skills,
+                        problem solving, and technical knowledge among students. The club organizes workshops, coding
+                        contests, technical talks, and collaborative learning sessions to help students prepare for
+                        careers in technology.
+                    </p>
+                    <p class="info-note" style="margin-top: 20px;">
+                        This section is currently a placeholder and will be updated with official information about the
+                        campus club.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mission & Objectives -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bullseye"></i> Mission and Objectives</h2>
+                </div>
+                <ul class="objective-list">
+                    <li>Promote coding culture within the campus</li>
+                    <li>Help students learn Data Structures and Algorithms</li>
+                    <li>Organize technical workshops and coding competitions</li>
+                    <li>Encourage collaborative learning among students</li>
+                    <li>Prepare students for technical interviews and internships</li>
+                </ul>
+                <p class="info-note">
+                    This section will be updated with the official mission and objectives of the club.
+                </p>
+            </div>
+
+            <!-- Team Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Club Team</h2>
+                </div>
+                <p class="info-note" style="margin-bottom: 20px;">
+                    Official club coordinators and members will be added here.
+                </p>
+
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="team-name">Dr. Sanjay Kumar</div>
+                        <div class="team-role">Faculty Coordinator</div>
+                        <div class="team-dept">CSE Department</div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="team-name">Rahul Sharma</div>
+                        <div class="team-role">Club Leader</div>
+                        <div class="team-dept">CSE Department</div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <div class="team-name">Sneha Reddy</div>
+                        <div class="team-role">Technical Lead</div>
+                        <div class="team-dept">IT Department</div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="team-name">Arjun Nair</div>
+                        <div class="team-role">Community Coordinator</div>
+                        <div class="team-dept">ECE Department</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

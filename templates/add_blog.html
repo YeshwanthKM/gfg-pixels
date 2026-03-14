@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar('leader', 'blogs') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club Leader</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Create Blog Post</h1>
+                <p>Publish a new update or tutorial for the club community.</p>
+            </div>
+
+            <div class="content-section" style="max-width: 800px;">
+                <form action="{{ url_for('add_blog') }}" method="POST">
+                    <div class="form-group">
+                        <label for="title">Blog Title</label>
+                        <input type="text" id="title" name="title"
+                            placeholder="e.g., Getting Started with Competitive Programming" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="author">Author Name</label>
+                            <input type="text" id="author" name="author" value="{{ user.name }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Publish Date</label>
+                            <input type="text" id="date" name="date" placeholder="e.g., March 14, 2026">
+                            <small style="color: var(--text-secondary);">Leave blank for current date</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Short Description / Content</label>
+                        <textarea id="description" name="description" rows="6"
+                            placeholder="Write a brief overview or the full content here..." required
+                            style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-family: inherit; font-size: 14px; outline: none; transition: var(--transition);"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; margin-top: 10px;">
+                        <button type="submit" class="btn">Publish Post</button>
+                        <a href="{{ url_for('blogs') }}" class="btn btn-secondary"
+                            style="border: 1px solid var(--border-color); background: transparent; color: var(--text-primary);">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
