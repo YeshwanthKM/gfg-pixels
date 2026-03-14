@@ -232,5 +232,17 @@ def view_event(event_id):
             
     return render_template('view_event.html', user=current_user, event=event, participants=participants)
 
+
+@app.route('/learning_resources')
+def learning_resources():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+        
+    user = USERS.get(session['user'])
+    if not user:
+        return redirect(url_for('login'))
+        
+    return render_template('learning_resources.html', user=user, role=user['role'])
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
