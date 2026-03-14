@@ -39,8 +39,16 @@
                         <i class="fas fa-tools"></i> {{ p.tech_used }}
                     </p>
                     <p style="margin-bottom: 20px; line-height: 1.6;">{{ p.description }}</p>
-                    <a href="{{ p.demo_link }}" target="_blank" class="btn"
-                        style="width: 100%; display: block; text-align: center;">View Project Demo</a>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="{{ p.demo_link }}" target="_blank" class="btn"
+                            style="flex: 1; text-align: center;">View Project Demo</a>
+                        {% if role == 'leader' %}
+                        <a href="{{ url_for('unpublish_project', project_id=pid) }}" class="btn btn-secondary"
+                            style="color: #F44336; border-color: #F44336;" title="Remove from Showcase">
+                            <i class="fas fa-times"></i>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
                 {% else %}
                 <div class="content-section" style="grid-column: 1 / -1; text-align: center; padding: 60px;">

@@ -559,6 +559,20 @@ def publish_project(project_id):
         flash(f"Project '{PROJECTS[project_id]['title']}' published to showcase.", 'success')
     return redirect(url_for('project_reviews'))
 
+@app.route('/unpublish_project/<project_id>')
+def unpublish_project(project_id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user or user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+    
+    if project_id in PROJECTS:
+        PROJECTS[project_id]['status'] = 'Approved'
+        flash(f"Project '{PROJECTS[project_id]['title']}' removed from showcase.", 'success')
+    return redirect(url_for('community_showcase'))
+
 @app.route('/delete_project/<project_id>')
 def delete_project(project_id):
     if 'user' not in session:
