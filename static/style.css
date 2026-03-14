@@ -185,7 +185,8 @@ a:hover {
     color: var(--text-primary);
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea {
     width: 100%;
     padding: 12px 15px;
     border: 1px solid var(--border-color);
@@ -193,9 +194,11 @@ a:hover {
     font-size: 14px;
     transition: var(--transition);
     font-family: inherit;
+    resize: vertical;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(15, 157, 88, 0.1);

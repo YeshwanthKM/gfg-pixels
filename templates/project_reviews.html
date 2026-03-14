@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Project Reviews{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar(role, 'project_reviews') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        {{ header(user, 'Club Leader') }}
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Project Review Dashboard</h1>
+                <p>Manage and curate member projects for the Community Showcase.</p>
+            </div>
+
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-clipboard-check"></i> Pending Reviews</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Project Title</th>
+                                <th>Submitted By</th>
+                                <th>Department</th>
+                                <th>Tech Stack</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pid, p in projects.items() %}
+                            <tr>
+                                <td>
+                                    <strong>{{ p.title }}</strong><br>
+                                    <a href="{{ p.demo_link }}" target="_blank"
+                                        style="font-size: 11px; color: var(--primary-color);">View Demo <i
+                                            class="fas fa-external-link-alt"></i></a>
+                                </td>
+                                <td>{{ p.submitter_name }}</td>
+                                <td>{{ p.department }}</td>
+                                <td>{{ p.tech_used }}</td>
+                                <td>
+                                    {% if p.status == 'Pending Review' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(255, 193, 7, 0.1); color: #ffc107;">{{ p.status
+                                        }}</span>
+                                    {% elif p.status == 'Approved' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">{{ p.status
+                                        }}</span>
+                                    {% elif p.status == 'Published' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">{{
+                                        p.status }}</span>
+                                    {% elif p.status == 'Rejected' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(244, 67, 54, 0.1); color: #F44336;">{{ p.status
+                                        }}</span>
+                                    {% endif %}
+                                </td>
+                                <td style="white-space: nowrap;">
+                                    {% if p.status == 'Pending Review' %}
+                                    <a href="{{ url_for('approve_project', project_id=pid) }}" class="btn"
+                                        style="padding: 6px 12px; font-size: 12px; margin-right: 5px; background-color: #2196F3;">Approve</a>
+                                    <a href="{{ url_for('reject_project', project_id=pid) }}" class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 12px; color: #F44336;">Reject</a>
+                                    {% elif p.status == 'Approved' %}
+                                    <a href="{{ url_for('publish_project', project_id=pid) }}" class="btn"
+                                        style="padding: 6px 12px; font-size: 12px; margin-right: 5px;">Publish</a>
+                                    {% endif %}
+                                    <a href="{{ url_for('delete_project', project_id=pid) }}"
+                                        style="color: #F44336; margin-left: 10px; font-size: 14px;"
+                                        onclick="return confirm('Are you sure you want to remove this project submission?')"><i
+                                            class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6"
+                                    style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                                    No project submissions found.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

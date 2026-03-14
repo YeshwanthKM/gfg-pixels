@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Community Showcase{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar(role, 'community_showcase') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        {{ header(user, 'Club ' ~ role|capitalize) }}
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Community Project Showcase</h1>
+                <p>Spotlighting innovative projects built by GFG Campus Club members.</p>
+            </div>
+
+            <div class="features-grid">
+                {% for pid, p in projects.items() %}
+                <div class="feature-card">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <span class="badge"
+                            style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">Featured
+                            Project</span>
+                        <div style="font-size: 20px; color: var(--text-secondary);">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                    </div>
+                    <h3 style="margin-bottom: 10px;">{{ p.title }}</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">
+                        <i class="fas fa-user-circle"></i> {{ p.submitter_name }} ({{ p.department }})
+                    </p>
+                    <p style="font-size: 13px; font-weight: 500; color: var(--primary-color); margin-bottom: 15px;">
+                        <i class="fas fa-tools"></i> {{ p.tech_used }}
+                    </p>
+                    <p style="margin-bottom: 20px; line-height: 1.6;">{{ p.description }}</p>
+                    <a href="{{ p.demo_link }}" target="_blank" class="btn"
+                        style="width: 100%; display: block; text-align: center;">View Project Demo</a>
+                </div>
+                {% else %}
+                <div class="content-section" style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+                    <i class="fas fa-lightbulb"
+                        style="font-size: 64px; color: var(--primary-color); opacity: 0.2; margin-bottom: 20px; display: block;"></i>
+                    <h2 style="color: var(--text-secondary);">Showcase is currently empty</h2>
+                    {% if role == 'member' %}
+                    <p>Be the first to submit your project and inspire the community!</p>
+                    <a href="{{ url_for('submit_project') }}" class="btn" style="margin-top: 20px;">Submit Your
+                        Project</a>
+                    {% else %}
+                    <p>Encourage members to submit their innovative projects to build the showcase.</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

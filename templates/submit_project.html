@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Project{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar(role, 'submit_project') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        {{ header(user, 'Club Member') }}
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title">
+                <h1>Submit Your Project</h1>
+                <p>Share your innovation with the GFG Campus Club community.</p>
+            </div>
+
+            <div class="content-section" style="max-width: 800px;">
+                <div class="section-header">
+                    <h2><i class="fas fa-file-upload"></i> Project Details</h2>
+                </div>
+
+                <form action="{{ url_for('submit_project') }}" method="POST">
+                    <div class="form-group">
+                        <label for="title">Project Title</label>
+                        <input type="text" id="title" name="title" placeholder="e.g. Smart Campus Navigation App"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Project Description</label>
+                        <textarea id="description" name="description" rows="5"
+                            placeholder="Describe your project, its purpose, and core features..." required></textarea>
+                    </div>
+
+                    <div class="stats-grid" style="margin-top: 0; gap: 20px;">
+                        <div class="form-group">
+                            <label for="tech_used">Technology Used</label>
+                            <input type="text" id="tech_used" name="tech_used"
+                                placeholder="e.g. React, Node.js, Firebase" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="demo_link">GitHub / Demo Link</label>
+                            <input type="url" id="demo_link" name="demo_link"
+                                placeholder="https://github.com/username/project" required>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        <button type="submit" class="btn">Submit Project</button>
+                        <a href="{{ url_for('my_submissions') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="info-note" style="margin-top: 20px; max-width: 800px;">
+                <i class="fas fa-info-circle"></i> After submission, your project will be reviewed by club leaders. Once
+                approved, it may be featured in the Community Showcase.
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

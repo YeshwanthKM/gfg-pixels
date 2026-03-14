@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}My Submissions{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar(role, 'my_submissions') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        {{ header(user, 'Club Member') }}
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>My Project Submissions</h1>
+                    <p>Track the status of your project reviews and showcase status.</p>
+                </div>
+                <a href="{{ url_for('submit_project') }}" class="btn">
+                    <i class="fas fa-plus" style="margin-right: 8px;"></i>Submit New Project
+                </a>
+            </div>
+
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list-ul"></i> Submission History</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Project Title</th>
+                                <th>Technology</th>
+                                <th>Submission Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pid, p in projects.items() %}
+                            <tr>
+                                <td><strong>{{ p.title }}</strong></td>
+                                <td>{{ p.tech_used }}</td>
+                                <td>{{ p.date }}</td>
+                                <td>
+                                    {% if p.status == 'Pending Review' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(255, 193, 7, 0.1); color: #ffc107;">{{ p.status
+                                        }}</span>
+                                    {% elif p.status == 'Approved' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">{{ p.status
+                                        }}</span>
+                                    {% elif p.status == 'Published' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">{{
+                                        p.status }}</span>
+                                    {% elif p.status == 'Rejected' %}
+                                    <span class="badge"
+                                        style="background-color: rgba(244, 67, 54, 0.1); color: #F44336;">{{ p.status
+                                        }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4"
+                                    style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                                    <i class="fas fa-folder-open"
+                                        style="font-size: 48px; display: block; margin-bottom: 20px; opacity: 0.3;"></i>
+                                    You haven't submitted any projects yet.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

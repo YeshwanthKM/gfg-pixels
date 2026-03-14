@@ -81,6 +81,9 @@ BLOGS = [
     }
 ]
 
+# In-memory projects storage
+PROJECTS = {}
+
 @app.route('/')
 def index():
     if 'user' in session:
@@ -448,6 +451,128 @@ def delete_blog(blog_id):
     BLOGS = [blog for blog in BLOGS if blog['id'] != blog_id]
     flash('Blog post deleted.', 'success')
     return redirect(url_for('blogs'))
+
+
+@app.route('/submit_project', methods=['GET', 'POST'])
+def submit_project():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
+        tech_used = request.form.get('tech_used')
+        demo_link = request.form.get('demo_link')
+        
+        project_id = str(uuid.uuid4())[:8]
+        PROJECTS[project_id] = {
+            'title': title,
+            'description': description,
+            'tech_used': tech_used,
+            'demo_link': demo_link,
+            'submitter_email': session['user'],
+            'submitter_name': user['name'],
+            'department': user['department'],
+            'date': datetime.now().strftime("%B %d, %Y"),
+            'status': 'Pending Review'
+        }
+        flash('Your project has been submitted for leader review.', 'success')
+        return redirect(url_for('my_submissions'))
+        
+    return render_template('submit_project.html', user=user, role=user['role'])
+
+@app.route('/my_submissions')
+def my_submissions():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user:
+        return redirect(url_for('login'))
+    
+    my_projects = {pid: p for pid, p in PROJECTS.items() if p['submitter_email'] == session['user']}
+    return render_template('my_submissions.html', user=user, projects=my_projects, role=user['role'])
+
+@app.route('/project_reviews')
+def project_reviews():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user or user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+    
+    return render_template('project_reviews.html', user=user, projects=PROJECTS, role=user['role'])
+
+@app.route('/community_showcase')
+def community_showcase():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user:
+        return redirect(url_for('login'))
+    
+    published_projects = {pid: p for pid, p in PROJECTS.items() if p['status'] == 'Published'}
+    return render_template('community_showcase.html', user=user, projects=published_projects, role=user['role'])
+
+@app.route('/approve_project/<project_id>')
+def approve_project(project_id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user or user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+    
+    if project_id in PROJECTS:
+        PROJECTS[project_id]['status'] = 'Approved'
+        flash(f"Project '{PROJECTS[project_id]['title']}' approved.", 'success')
+    return redirect(url_for('project_reviews'))
+
+@app.route('/reject_project/<project_id>')
+def reject_project(project_id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user or user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+    
+    if project_id in PROJECTS:
+        PROJECTS[project_id]['status'] = 'Rejected'
+        flash(f"Project '{PROJECTS[project_id]['title']}' rejected.", 'success')
+    return redirect(url_for('project_reviews'))
+
+@app.route('/publish_project/<project_id>')
+def publish_project(project_id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user or user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+    
+    if project_id in PROJECTS:
+        PROJECTS[project_id]['status'] = 'Published'
+        flash(f"Project '{PROJECTS[project_id]['title']}' published to showcase.", 'success')
+    return redirect(url_for('project_reviews'))
+
+@app.route('/delete_project/<project_id>')
+def delete_project(project_id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    user = USERS.get(session['user'])
+    if not user or user['role'] != 'leader':
+        flash('Unauthorized access', 'error')
+        return redirect(url_for('login'))
+    
+    if project_id in PROJECTS:
+        title = PROJECTS[project_id]['title']
+        del PROJECTS[project_id]
+        flash(f"Project '{title}' removed.", 'success')
+    return redirect(url_for('project_reviews'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
