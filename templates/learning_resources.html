@@ -8,18 +8,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <!-- Top Header -->
-        <header class="top-header">
-            <div class="search-bar"></div>
-            <div class="user-profile">
-                <div class="user-info" style="text-align: right;">
-                    <h4>{{ user.name }}</h4>
-                    <p>Club {{ role|capitalize }}</p>
-                </div>
-                <div class="avatar">
-                    {{ user.name[0] }}
-                </div>
-            </div>
-        </header>
+        {{ header(user, 'Club ' ~ role|capitalize) }}
 
         <!-- Content Area -->
         <div class="content-wrapper">

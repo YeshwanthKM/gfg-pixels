@@ -256,9 +256,20 @@ def create_event():
             'participants': []
         }
         flash('Event created successfully!', 'success')
-        return redirect(url_for('leader_dashboard'))
+        return redirect(url_for('events'))
         
     return render_template('create_event.html', user=current_user)
+
+@app.route('/events')
+def events():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+        
+    user = USERS.get(session['user'])
+    if not user:
+        return redirect(url_for('login'))
+        
+    return render_template('events.html', user=user, role=user['role'], events=EVENTS)
 
 @app.route('/join_event/<event_id>')
 def join_event(event_id):
@@ -279,7 +290,7 @@ def join_event(event_id):
     else:
         flash('Event not found.', 'error')
         
-    return redirect(url_for('member_dashboard'))
+    return redirect(url_for('events'))
 
 @app.route('/view_event/<event_id>')
 def view_event(event_id):
@@ -293,7 +304,7 @@ def view_event(event_id):
         
     if event_id not in EVENTS:
         flash('Event not found.', 'error')
-        return redirect(url_for('leader_dashboard'))
+        return redirect(url_for('events'))
         
     event = EVENTS[event_id]
     

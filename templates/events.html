@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    {{ sidebar(role, 'events') }}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar"></div>
+            <div class="user-profile">
+                <div class="user-info" style="text-align: right;">
+                    <h4>{{ user.name }}</h4>
+                    <p>Club {{ role|capitalize }}</p>
+                </div>
+                <div class="avatar">
+                    {{ user.name[0] }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <div class="page-title" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>Events Dashboard</h1>
+                    <p>Manage, track, and join upcoming club events and workshops.</p>
+                </div>
+                {% if role == 'leader' %}
+                <a href="{{ url_for('create_event') }}" class="btn">
+                    <i class="fas fa-plus" style="margin-right: 8px;"></i>Create New Event
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar-check"></i> Upcoming Events</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Event Title</th>
+                                <th>Date</th>
+                                <th>{% if role == 'leader' %}Host{% else %}Status{% endif %}</th>
+                                <th>Participants</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event_id, event in events.items() %}
+                            <tr>
+                                <td><strong>{{ event.title }}</strong></td>
+                                <td>{{ event.date }}</td>
+                                <td>
+                                    {% if role == 'leader' %}
+                                    {{ event.host_email }}
+                                    {% else %}
+                                    {% if user.email in event.participants %}
+                                    <span class="badge"
+                                        style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">Joined</span>
+                                    {% else %}
+                                    <span class="badge"
+                                        style="background-color: rgba(0, 0, 0, 0.05); color: var(--text-secondary);">Available</span>
+                                    {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge"
+                                        style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">
+                                        <i class="fas fa-users"></i> {{ event.participants|length }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if role == 'leader' %}
+                                    <a href="{{ url_for('view_event', event_id=event_id) }}" class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 12px;">View Details</a>
+                                    {% else %}
+                                    {% if user.email in event.participants %}
+                                    <button class="btn btn-secondary" disabled
+                                        style="padding: 6px 12px; font-size: 12px; opacity: 0.6; cursor: not-allowed;">Joined</button>
+                                    {% else %}
+                                    <a href="{{ url_for('join_event', event_id=event_id) }}" class="btn"
+                                        style="padding: 6px 12px; font-size: 12px;">Join Event</a>
+                                    {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5"
+                                    style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                    <i class="fas fa-calendar-times"
+                                        style="font-size: 48px; display: block; margin-bottom: 20px; opacity: 0.3;"></i>
+                                    No events scheduled at the moment.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

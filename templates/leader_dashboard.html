@@ -8,20 +8,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <!-- Top Header -->
-        <header class="top-header">
-            <div class="search-bar">
-                <!-- Search could go here -->
-            </div>
-            <div class="user-profile">
-                <div class="user-info" style="text-align: right;">
-                    <h4>{{ user.name }}</h4>
-                    <p>Club Leader</p>
-                </div>
-                <div class="avatar">
-                    {{ user.name[0] }}
-                </div>
-            </div>
-        </header>
+        {{ header(user, 'Club Leader') }}
 
         <!-- Content Area -->
         <div class="content-wrapper">
@@ -61,52 +48,23 @@
                 </div>
             </div>
 
-            <!-- Events Section -->
-            <div id="events-section" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-calendar-alt"></i> Active Events</h2>
-                    <a href="{{ url_for('create_event') }}" class="btn"><i class="fas fa-plus"
-                            style="margin-right: 8px;"></i>Create New Event</a>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Event Title</th>
-                                <th>Date</th>
-                                <th>Host</th>
-                                <th>Participants Joined</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for event_id, event in events.items() %}
-                            <tr>
-                                <td><strong>{{ event.title }}</strong></td>
-                                <td>{{ event.date }}</td>
-                                <td>{{ event.host_email }}</td>
-                                <td>
-                                    <span class="badge"
-                                        style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">
-                                        <i class="fas fa-user-check"></i> {{ event.participants|length }} Joined
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ url_for('view_event', event_id=event_id) }}" class="btn btn-secondary"
-                                        style="padding: 6px 12px; font-size: 12px;">View Details</a>
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="5"
-                                    style="text-align: center; color: var(--text-secondary); padding: 30px;">
-                                    No active events. Try creating one!
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+            <!-- Events Summary Card -->
+            <div class="content-section"
+                style="background: linear-gradient(135deg, rgba(15, 157, 88, 0.05) 0%, rgba(33, 150, 243, 0.05) 100%); border: 1px dashed var(--primary-color);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="font-size: 30px; color: var(--primary-color);">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 18px;">Event Management</h3>
+                            <p style="margin: 5px 0 0; color: var(--text-secondary); font-size: 14px;">You have {{
+                                total_events }} active events scheduled. Manage participants and details in the
+                                standalone dashboard.</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('events') }}" class="btn">Go to Events Dashboard <i class="fas fa-arrow-right"
+                            style="margin-left: 8px;"></i></a>
                 </div>
             </div>
 
@@ -115,7 +73,8 @@
                 <div class="section-header">
                     <h2><i class="fas fa-address-book"></i> Member Directory</h2>
                     <a href="{{ url_for('add_member') }}" class="btn"><i class="fas fa-plus"
-                            style="margin-right: 8px;"></i>Add New Member</a>
+                            style="margin-right: 8px;"></i>Add
+                        New Member</a>
                 </div>
 
                 <div class="table-responsive">

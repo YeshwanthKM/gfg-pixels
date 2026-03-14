@@ -550,18 +550,102 @@ a:hover {
 @media (max-width: 992px) {
     .sidebar {
         transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
     }
 
     .main-content {
         margin-left: 0;
+        width: 100%;
     }
 
     .top-header {
-        padding: 0 20px;
+        padding: 0 15px;
+    }
+
+    .mobile-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        cursor: pointer;
+        font-size: 18px;
+        transition: var(--transition);
+    }
+
+    .mobile-toggle:hover {
+        background: rgba(15, 157, 88, 0.05);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .mobile-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(2px);
+        z-index: 95;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+        display: block;
     }
 
     .content-wrapper {
-        padding: 20px;
+        padding: 20px 15px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-title h1 {
+        font-size: 22px;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .section-header .btn {
+        width: 100%;
+    }
+}
+
+/* Hide toggle on desktop */
+@media (min-width: 993px) {
+    .mobile-toggle {
+        display: none;
+    }
+
+    .mobile-overlay {
+        display: none !important;
     }
 }
 

@@ -48,7 +48,7 @@
                     <span>Club Information</span>
                 </a>
             </div>
-            <a href="{{ url_for('leader_dashboard') }}#events-section" class="nav-item">
+            <a href="{{ url_for('events') }}" class="nav-item {% if active_page == 'events' %}active{% endif %}">
                 <i class="fas fa-calendar-alt"></i>
                 <span>Events</span>
             </a>
@@ -89,6 +89,10 @@
                     <span>Club Information</span>
                 </a>
             </div>
+            <a href="{{ url_for('events') }}" class="nav-item {% if active_page == 'events' %}active{% endif %}">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
             <a href="{{ url_for('contact') }}" class="nav-item {% if active_page == 'contact' %}active{% endif %}">
                 <i class="fas fa-envelope"></i>
                 <span>Contact & Support</span>
@@ -102,6 +106,26 @@
             </a>
         </div>
     </aside>
+    {% endmacro %}
+
+    {% macro header(user, role_text) %}
+    <header class="top-header">
+        <div class="header-left">
+            <button class="mobile-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="search-bar"></div>
+        </div>
+        <div class="user-profile">
+            <div class="user-info" style="text-align: right;">
+                <h4>{{ user.name }}</h4>
+                <p>{{ role_text }}</p>
+            </div>
+            <div class="avatar">
+                {{ user.name[0] }}
+            </div>
+        </div>
+    </header>
     {% endmacro %}
 </head>
 
@@ -121,11 +145,21 @@
     {% endif %}
     {% endwith %}
 
+    <div id="mobile-overlay" class="mobile-overlay" onclick="toggleSidebar()"></div>
+
     {% block content %}
     <!-- Specific page content goes here -->
     {% endblock %}
 
     <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
         // Auto-hide flash messages after 5 seconds
         setTimeout(function () {
             const flashes = document.querySelectorAll('.flash-message');
