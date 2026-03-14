@@ -1073,3 +1073,9 @@ a:hover {
     background: var(--surface-color);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
+
+[data-theme='dark'] .badge.member {
+    background-color: rgba(230, 237, 243, 0.1);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
