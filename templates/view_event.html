@@ -3,18 +3,18 @@
 {% block content %}
 <div class="dashboard-layout">
     <!-- Sidebar -->
-    {{ sidebar('leader', 'dashboard') }}
+    {{ sidebar(user.role, 'dashboard') }}
 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Top Header -->
-        {{ header(user, 'Club Leader') }}
+        {{ header(user, 'Club ' ~ user.role|capitalize) }}
 
         <!-- Content Area -->
         <div class="content-wrapper">
             <div class="page-title" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <a href="{{ url_for('leader_dashboard') }}"
+                    <a href="{{ url_for(user.role ~ '_dashboard') }}"
                         style="display: inline-flex; align-items: center; gap: 5px; margin-bottom: 15px; font-size: 14px;"><i
                             class="fas fa-arrow-left"></i> Back to Dashboard</a>
                     <h1>{{ event.title }}</h1>

@@ -8,18 +8,8 @@
     <!-- Main Content -->
     <main class="main-content">
         <!-- Top Header -->
-        <header class="top-header">
-            <div class="search-bar"></div>
-            <div class="user-profile">
-                <div class="user-info" style="text-align: right;">
-                    <h4>{{ user.name }}</h4>
-                    <p>Club {{ role|capitalize }}</p>
-                </div>
-                <div class="avatar">
-                    {{ user.name[0] }}
-                </div>
-            </div>
-        </header>
+        <!-- Top Header -->
+        {{ header(user, 'Club ' ~ role|capitalize) }}
 
         <!-- Content Area -->
         <div class="content-wrapper">
@@ -60,7 +50,7 @@
                                     {% if role == 'leader' %}
                                     {{ event.host_email }}
                                     {% else %}
-                                    {% if user.email in event.participants %}
+                                    {% if email in event.participants %}
                                     <span class="badge"
                                         style="background-color: rgba(15, 157, 88, 0.1); color: var(--primary-color);">Joined</span>
                                     {% else %}
@@ -79,7 +69,7 @@
                                     <a href="{{ url_for('view_event', event_id=event_id) }}" class="btn btn-secondary"
                                         style="padding: 6px 12px; font-size: 12px; margin-right: 5px;">View Details</a>
 
-                                    {% if role == 'member' and user.email not in event.participants %}
+                                    {% if role == 'member' and email not in event.participants %}
                                     <a href="{{ url_for('join_event', event_id=event_id) }}" class="btn"
                                         style="padding: 6px 12px; font-size: 12px;">Join Event</a>
                                     {% elif role == 'member' %}
@@ -105,15 +95,21 @@
 
             <div class="content-section" style="margin-top: 40px;">
                 <div class="section-header">
-                    <h2><i class="fas fa-history"></i> Participated Events</h2>
+                    <h2><i class="fas fa-history"></i> {% if role == 'leader' %}Conducted Events{% else %}Participated
+                        Events{% endif %}</h2>
                 </div>
 
                 <div
                     style="background-color: rgba(33, 150, 243, 0.05); border-left: 4px solid #2196F3; padding: 15px; margin-bottom: 25px; border-radius: 4px;">
                     <p style="margin: 0; font-size: 14px; color: var(--text-primary);">
                         <i class="fas fa-info-circle" style="margin-right: 8px; color: #2196F3;"></i>
+                        {% if role == 'leader' %}
+                        This section will track the events that you conduct. Event management tracking will be
+                        implemented in a future update.
+                        {% else %}
                         This section will track the events that students participate in. Event participation tracking
                         will be implemented in a future update.
+                        {% endif %}
                     </p>
                 </div>
 

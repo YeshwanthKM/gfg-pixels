@@ -316,7 +316,7 @@ def events():
     if not user:
         return redirect(url_for('login'))
         
-    return render_template('events.html', user=user, role=user['role'], events=EVENTS)
+    return render_template('events.html', user=user, email=session['user'], role=user['role'], events=EVENTS)
 
 @app.route('/join_event/<event_id>')
 def join_event(event_id):
