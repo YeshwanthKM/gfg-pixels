@@ -1181,11 +1181,15 @@ a:hover {
 }
 
 [data-theme='dark'] .stat-icon.primary {
-    background-color: rgba(15, 157, 88, 0.15);
+    background-color: rgba(15, 157, 88, 0.2);
+    color: #4ade80;
+    /* Brighter green for dark mode */
 }
 
 [data-theme='dark'] .stat-icon.secondary {
-    background-color: rgba(43, 50, 60, 0.4);
+    background-color: rgba(56, 139, 253, 0.15);
+    color: #58a6ff;
+    /* Bright blue for visibility in dark mode */
 }
 
 .theme-toggle {
