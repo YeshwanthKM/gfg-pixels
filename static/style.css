@@ -104,6 +104,17 @@ a:hover {
     transition: opacity 0.3s ease;
 }
 
+[data-theme='dark'] .flash-message {
+    background: #1f2937;
+    color: #f3f4f6;
+    border-color: #374151;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .close-btn {
+    color: #9ca3af;
+}
+
 .flash-message.error {
     border-left-color: var(--error-color);
 }
