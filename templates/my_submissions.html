@@ -43,7 +43,7 @@
                             {% for pid, p in projects.items() %}
                             <tr>
                                 <td><strong>{{ p.title }}</strong></td>
-                                <td>{{ p.tech_used }}</td>
+                                <td>{{ p.key_focus }}</td>
                                 <td>{{ p.date }}</td>
                                 <td>
                                     {% if p.status == 'Pending Review' %}
