@@ -373,16 +373,6 @@ def club_info():
         return redirect(url_for('login'))
     return render_template('club_info.html', user=user)
 
-@app.route('/learning_resources')
-def learning_resources():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-        
-    user = USERS.get(session['user'])
-    if not user:
-        return redirect(url_for('login'))
-        
-    return render_template('learning_resources.html', user=user, role=user['role'])
 
 @app.route('/leaderboard')
 def leaderboard():
