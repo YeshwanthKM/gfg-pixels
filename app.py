@@ -62,9 +62,9 @@ USERS = {
 # In-memory events storage
 EVENTS = {
     'evt1': {
-        'title': 'Introduction to Data Structures',
+        'title': 'Welcome Mixer & Orientation',
         'date': '2026-03-20',
-        'description': 'A workshop covering the basics of arrays, linked lists, and trees.',
+        'description': 'An introductory session for new members to learn about our club\'s goals and upcoming activities.',
         'host_email': 'leader1@gmail.com',
         'participants': ['member1@gmail.com', 'member2@gmail.com']
     }
@@ -74,17 +74,17 @@ EVENTS = {
 BLOGS = [
     {
         'id': 'blog1',
-        'title': 'Getting Started with Data Structures',
+        'title': 'How to Make the Most of Your Club Membership',
         'author': 'Rahul Sharma',
         'date': 'March 14, 2026',
-        'description': 'An introduction to data structures and why they are important for coding interviews.'
+        'description': 'Learn about the various opportunities and resources available to you as a member of the SCM System.'
     },
     {
         'id': 'blog2',
-        'title': 'Python Tips for Competitive Programming',
+        'title': 'Effective Leadership and Coordination',
         'author': 'Priya Patel',
         'date': 'March 12, 2026',
-        'description': 'Learn helpful built-in functions and libraries in Python that can speed up your problem-solving.'
+        'description': 'A guide for leaders and active members on how to organize successful club events and activities.'
     }
 ]
 
