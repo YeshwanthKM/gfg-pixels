@@ -1,10 +1,17 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import os
 import uuid
 from datetime import datetime
+from groq import Groq
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+# Initialize Groq client
+client = Groq(api_key=os.environ.get("GROQ_API_KEY", "PLACEHOLDER_KEY"))
 
 # Predefined Users
 USERS = {
@@ -577,6 +584,45 @@ def delete_project(project_id):
         del PROJECTS[project_id]
         flash(f"Project '{title}' removed.", 'success')
     return redirect(url_for('project_reviews'))
+
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    if 'user' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    user_data = USERS.get(session['user'])
+    if not user_data:
+        return jsonify({'error': 'User not found'}), 404
+
+    data = request.json
+    message = data.get('message')
+    if not message:
+        return jsonify({'error': 'No message provided'}), 400
+
+    try:
+        completion = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"You are the official AI Assistant for the Smart Club Management System (SCM System). "
+                               f"You help students and leaders manage their club activities and coordination. "
+                               f"The user you are talking to is {user_data['name']}, a {user_data['role']} in the {user_data['department']} department. "
+                               f"Be helpful, professional, and concise. "
+                               f"**CRITICAL: Do NOT use Markdown formatting like asterisks (**) for bolding or headers.** "
+                               f"Instead, use clear line breaks, capital letters for headings, and simple plain-text bullet points (*) for organization."
+                },
+                {"role": "user", "content": message}
+            ],
+            temperature=0.7,
+            max_tokens=1024,
+            stream=False
+        )
+        return jsonify({'response': completion.choices[0].message.content})
+    except Exception as e:
+        print(f"Chat Error: {str(e)}")
+        return jsonify({'error': "Assistant is currently resting. Please check API key."}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
