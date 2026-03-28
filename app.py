@@ -461,14 +461,14 @@ def submit_project():
     if request.method == 'POST':
         title = request.form.get('title')
         description = request.form.get('description')
-        tech_used = request.form.get('tech_used')
+        key_focus = request.form.get('key_focus')
         demo_link = request.form.get('demo_link')
         
         project_id = str(uuid.uuid4())[:8]
         PROJECTS[project_id] = {
             'title': title,
             'description': description,
-            'key_focus': tech_used,
+            'key_focus': key_focus,
             'demo_link': demo_link,
             'submitter_email': session['user'],
             'submitter_name': user['name'],
