@@ -8,42 +8,42 @@ app.secret_key = os.urandom(24)
 
 # Predefined Users
 USERS = {
-    'admin1@scm.com': {
+    'leader1@gmail.com': {
         'password': 'leader123',
         'role': 'leader',
         'name': 'Rahul Sharma',
         'reg_no': '20BCE1001',
         'department': 'Computer Science'
     },
-    'admin2@scm.com': {
+    'leader2@gmail.com': {
         'password': 'leader123',
         'role': 'leader',
         'name': 'Priya Patel',
         'reg_no': '20BCE1002',
         'department': 'Information Technology'
     },
-    'student1@scm.com': {
+    'member1@gmail.com': {
         'password': 'member123',
         'role': 'member',
         'name': 'Amit Kumar',
         'reg_no': '21BCE2001',
         'department': 'Computer Science'
     },
-    'student2@scm.com': {
+    'member2@gmail.com': {
         'password': 'member123',
         'role': 'member',
         'name': 'Sneha Gupta',
         'reg_no': '21BCE2002',
         'department': 'Electronics'
     },
-    'student3@scm.com': {
+    'member3@gmail.com': {
         'password': 'member123',
         'role': 'member',
         'name': 'Rohan Das',
         'reg_no': '20BCE3001',
         'department': 'Mechanical'
     },
-    'student4@scm.com': {
+    'member4@gmail.com': {
         'password': 'member123',
         'role': 'member',
         'name': 'Neha Singh',
@@ -58,8 +58,8 @@ EVENTS = {
         'title': 'Introduction to Data Structures',
         'date': '2026-03-20',
         'description': 'A workshop covering the basics of arrays, linked lists, and trees.',
-        'host_email': 'admin1@scm.com',
-        'participants': ['student1@scm.com', 'student2@scm.com']
+        'host_email': 'leader1@gmail.com',
+        'participants': ['member1@gmail.com', 'member2@gmail.com']
     }
 }
 
