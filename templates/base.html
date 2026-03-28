@@ -26,11 +26,6 @@
                 <i class="fas fa-user-plus"></i>
                 <span>Add Member</span>
             </a>
-            <a href="{{ url_for('learning_resources') }}"
-                class="nav-item {% if active_page == 'learning' %}active{% endif %}">
-                <i class="fas fa-laptop-code"></i>
-                <span>Learning Paths</span>
-            </a>
             <div class="nav-group">
                 <span class="nav-label">Community</span>
                 <a href="{{ url_for('leaderboard') }}"
@@ -75,11 +70,6 @@
                 class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
-            </a>
-            <a href="{{ url_for('learning_resources') }}"
-                class="nav-item {% if active_page == 'learning' %}active{% endif %}">
-                <i class="fas fa-laptop-code"></i>
-                <span>Learning Paths</span>
             </a>
             <div class="nav-group">
                 <span class="nav-label">Community</span>
