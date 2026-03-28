@@ -8,42 +8,42 @@ app.secret_key = os.urandom(24)
 
 # Predefined Users
 USERS = {
-    'gfgleader1@gmail.com': {
+    'admin1@scm.com': {
         'password': 'leader123',
         'role': 'leader',
         'name': 'Rahul Sharma',
         'reg_no': '20BCE1001',
         'department': 'Computer Science'
     },
-    'gfgleader2@gmail.com': {
+    'admin2@scm.com': {
         'password': 'leader123',
         'role': 'leader',
         'name': 'Priya Patel',
         'reg_no': '20BCE1002',
         'department': 'Information Technology'
     },
-    'gfgmember1@gmail.com': {
+    'student1@scm.com': {
         'password': 'member123',
         'role': 'member',
         'name': 'Amit Kumar',
         'reg_no': '21BCE2001',
         'department': 'Computer Science'
     },
-    'gfgmember2@gmail.com': {
+    'student2@scm.com': {
         'password': 'member123',
         'role': 'member',
         'name': 'Sneha Gupta',
         'reg_no': '21BCE2002',
         'department': 'Electronics'
     },
-    'gfgmember3@gmail.com': {
+    'student3@scm.com': {
         'password': 'member123',
         'role': 'member',
         'name': 'Rohan Das',
-        'reg_no': '22BCE3001',
+        'reg_no': '20BCE3001',
         'department': 'Mechanical'
     },
-    'gfgmember4@gmail.com': {
+    'student4@scm.com': {
         'password': 'member123',
         'role': 'member',
         'name': 'Neha Singh',
@@ -58,8 +58,8 @@ EVENTS = {
         'title': 'Introduction to Data Structures',
         'date': '2026-03-20',
         'description': 'A workshop covering the basics of arrays, linked lists, and trees.',
-        'host_email': 'gfgleader1@gmail.com',
-        'participants': ['gfgmember1@gmail.com', 'gfgmember2@gmail.com']
+        'host_email': 'admin1@scm.com',
+        'participants': ['student1@scm.com', 'student2@scm.com']
     }
 }
 
