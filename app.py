@@ -468,7 +468,7 @@ def submit_project():
         PROJECTS[project_id] = {
             'title': title,
             'description': description,
-            'tech_used': tech_used,
+            'key_focus': tech_used,
             'demo_link': demo_link,
             'submitter_email': session['user'],
             'submitter_name': user['name'],
